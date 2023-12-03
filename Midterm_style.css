@@ -1,0 +1,157 @@
+/* set the background image */
+body {
+    background-image: url(./images/background.jpg);
+}
+
+/* draw a transparent rectangle displayed with flex
+position and style */
+.transparent-flex {
+    display: flex;
+    position: absolute;
+    padding: 8px ;
+    bottom: 30%;
+    left: 50%;
+    height: 40%;
+    width: 50%;
+    margin: -15% 0 0 -25%;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid black;
+    opacity: 0.7;
+    border-radius: 25px;
+}
+
+/* position "Mr. or Ms." title using flex and style its font */
+#MrorMs {
+    flex: 1;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+/* position "Prediction" title using flex and style its font */
+#Prediction {
+    flex: 1;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+/* position and select font size for the form */
+form {
+    position: relative;
+    top: 25px;
+    left: 45px;
+    font-size: medium;
+}
+
+/* position submit button */
+#submitbtn {
+    position: relative;
+    top: 30px;
+    right: 77px;
+}
+
+/* position and style radio buttons */
+.container {
+  display: block;
+  position: relative;
+  padding-right: 125px;
+  padding-top: 20px;
+  margin-top: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 23px;
+  left: 87px;
+  height: 12px;
+  width: 12px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #6200ff;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+
+/* position gender (predicted by website) field */
+#gender {
+  position: relative;
+  padding: auto;
+  margin: auto;
+  top: 10px;
+  left: 30px;
+  border:#ccc;
+} 
+
+/* position probability (predicted by website) field */
+#probability {
+  position: relative;
+  padding: auto;
+  margin: auto;
+  top: 20px;
+  left: 30px;
+  border: #ccc;
+}
+
+/* position "Saved Answer" title */
+#SavedAnswer {
+  position: relative;
+  top: 60px;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+/* position user's saved answer by radio button */
+#saved_radio {
+  position: relative;
+  top: 80px;
+}
+
+/* position clear button in the page */
+#clearbtn {
+  position: relative;
+  top: 90px;
+  right: 60px;
+}

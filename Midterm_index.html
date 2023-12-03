@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+    <meta name="viewport" content="width-device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./Midterm_style.css" />
+    <title>Midterm Project</title>
+</head>
+
+<body>
+    <div id="background">
+        <div class="transparent-flex">
+            <div id="MrorMs">Mr. or Ms.?
+                <form id="form-user" action="#" method="post">
+                    <div class="form-box" data-errormsg="">
+                        <label for="Name">Name</label>
+                        <input type="text" id="Name" required placeholder="" />
+                        <label class="container">Male
+                            <input id="Male" type="radio" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="container">Female
+                            <input id="Female" type="radio" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <div><input id="submitbtn" type="button" value="submit"></input>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="Prediction">Prediction
+                <div><input id="gender" type="text"></div>
+                <div><input id="probability" type="text"></div>
+                <div id="SavedAnswer">Saved Answer</div>
+                <div><input id="saved_radio" type="text"></div>
+                <div id="msg" style="width: 50%"></div>
+                <div><input id="clearbtn" type="button" value="clear"></input>
+                </div>
+
+            </div>
+        </div>
+
+        <script type="text/javascript">
+
+            /* return the value of selected radio button */
+            function Male_or_Female() {
+                let user_radio_ans = ""
+
+                if (document.getElementById("Female").checked) {
+                    user_radio_ans = "Female"
+                }
+                if (document.getElementById("Male").checked) {
+                    user_radio_ans = "Male"
+                }
+                return user_radio_ans
+            }
+
+            /* return the url that we're gonna request to it
+             by appending the entered name to incomplete url */
+            function makeurl(url) {
+                let name = document.getElementById("Name").value
+                url += name
+                return url
+            }
+
+            /* print website's prediction and user's saved answer by radio button */
+            async function show_predict_show_saved_ans() {
+
+                let name = document.getElementById("Name").value
+                mystorage = window.localStorage
+                mystorage.setItem(name, Male_or_Female())
+                document.getElementById("saved_radio").value = mystorage.getItem(name)
+                let incomplete_url = 'https://api.genderize.io/?name='
+                let complete_url = makeurl(incomplete_url)
+
+                let response = await fetch(complete_url);
+                let json = await response.json();
+                if (!response.ok) {
+
+                    /* if we have a network error, throw an errot, catch it and show the appropriate message */
+                    try {
+                        throw new Error("Network response was not ok, " + response.text + response.status);
+                    } catch (e) {
+                        console.log(e.message);
+                        console.log(e.details);
+                        document.getElementById("gender").value = e.message
+                        document.getElementById("probability").value = ""
+                    }
+                }
+                if (json.probability == 0) {
+
+                    /* if the website doesn't have a prediction for the name,
+                     throw and error, catch it, show the appropriate message 
+                     ,clear the probability input value of zero and uncheck the radio button  */
+                    try {
+                        throw new Error("Error: No Prediction");
+                        console.log(json);
+                        document.getElementById("gender").value = json.gender
+                        document.getElementById("probability").value = json.probability
+
+                    } catch (e) {
+                        document.getElementById("gender").value = e.message
+                        document.getElementById("probability").value = ""
+                        document.getElementById('Male').checked = false
+                        document.getElementById('Female').checked = false
+                    }
+                }
+                else if (json.name == null) {
+
+                    /* if the user did not enter a name,
+                     throw and error, catch it, show the appropriate message
+                     ,clear the probability input value of zero and uncheck the radio button  */
+                    try {
+                        throw new Error('Error: Enter a name');
+                        console.log(json);
+                    }
+                    catch (e) {
+                        var colored_error = new String(e.message);
+                        document.getElementById("gender").value = colored_error
+                        document.getElementById("probability").value = ""
+                        document.getElementById('Male').checked = false
+                        document.getElementById('Female').checked = false
+                    }
+                }
+
+                /* if none of above setuations occured, show the preciction and uncheck the radio button */
+                else {
+                    document.getElementById("gender").value = json.gender
+                    document.getElementById("probability").value = json.probability
+                    document.getElementById('Male').checked = false
+                    document.getElementById('Female').checked = false
+                }
+            }
+
+            /* clear saved answer from local storage */
+            function clear_saved_ans() {
+                let name = document.getElementById("Name").value
+                mystorage.setItem(name, "")
+            }
+
+            /* when submit button get clicked,
+             print website's prediction and user's saved answer by radio button  */
+            document.getElementById("submitbtn").onclick = show_predict_show_saved_ans
+
+            /* when clear button get clicked, clear saved answer from local storage */
+            document.getElementById("clearbtn").onclick = clear_saved_ans
+
+        </script>
+
+</body>
+
+</html>
